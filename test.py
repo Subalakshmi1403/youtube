@@ -1,21 +1,12 @@
-from pytube import YouTube
+import os
+import browser_cookie3
 
+# Set the environment variable for Chrome's user data directory (replace <YourUsername>)
+os.environ['CHROME_USER_DATA_DIR'] = r"C:\Users\<YourUsername>\AppData\Local\Google\Chrome\User Data"
 
-from yt_dlp import YoutubeDL
+# Now use the browser_cookie3 to get cookies
+cookies = browser_cookie3.chrome()
 
-def download_video_ytdlp(video_url):
-    try:
-        ydl_opts = {
-            'format': 'best',
-            'outtmpl': 'downloads/%(title)s.%(ext)s',
-        }
-        with YoutubeDL(ydl_opts) as ydl:
-            ydl.download([video_url])
-        return "Download completed successfully"
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-
-# Test with your video URL
-video_url = "https://www.youtube.com/watch?v=AAq06bS8UZM"
-print(download_video_ytdlp(video_url))
+# Print cookies for a specific domain
+for cookie in cookies:
+    print(cookie)

@@ -32,23 +32,21 @@ def download_video():
         ydl_opts = {
             'format': 'best',
             'outtmpl': Props.DOWNLOAD_PATH + '%(title)s.%(ext)s',
+            'cookiefile': 'cookies.txt',  # Make sure cookies.txt is in your project directory
         }
 
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=True)
             downloaded_filename = ydl.prepare_filename(info)
 
-        # Sanitize filename before returning it
         sanitized_filename = sanitize_filename(os.path.basename(downloaded_filename))
-
-        # Rename the file to the sanitized version
         os.rename(downloaded_filename, os.path.join(Props.DOWNLOAD_PATH, sanitized_filename))
 
         return render_template('download.html', filename=sanitized_filename)
 
     except Exception as e:
+        logging.error(f"Download error: {str(e)}")
         return f"Error: {str(e)}", 500
-
 @app.route('/get-video/<filename>')
 def get_video(filename):
 
