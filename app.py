@@ -9,6 +9,15 @@ from modules.config import Props
 app=Flask(__name__)
 
 
+if 'YOUTUBE_COOKIES' in os.environ:
+    try:
+        with open('cookies.txt', 'w') as f:
+            f.write(os.environ['YOUTUBE_COOKIES'])
+        print("Cookies file created successfully")
+    except Exception as e:
+        print(f"Error creating cookies file: {e}")
+
+
 YOUTUBE_URL_PATTERN = r'^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$'
 
 @app.route('/')
